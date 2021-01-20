@@ -1,0 +1,287 @@
+<!-- jquery dataTable -->
+<link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<!-- Datatables -->
+<link href="/backstage/plugin/datatables.net-bs/css/dataTables.bootstrap.min.css"
+      rel="stylesheet">
+<link href="/backstage/plugin/datatables.net-buttons-bs/css/buttons.bootstrap.min.css"
+      rel="stylesheet">
+<link href="/backstage/plugin/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css"
+      rel="stylesheet">
+<link href="/backstage/plugin/datatables.net-responsive-bs/css/responsive.bootstrap.min.css"
+      rel="stylesheet">
+<link href="/backstage/plugin/datatables.net-scroller-bs/css/scroller.bootstrap.min.css"
+      rel="stylesheet">
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>职位 <small>职位列表</small></h3>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <button class="btn btn-primary" type="button" id="addModalBtn"
+                                data-toggle="modal" data-target="#addModal">新增</button>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box table-responsive">
+                                    <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>职位名称</th>
+                                                <th>游览次数</th>
+                                                <th>职位描述</th>
+                                                <th>操作列</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+<div th:replace="backstagesystem/job/jobAdd"></div>
+<div th:replace="backstagesystem/job/jobEdit"></div>
+
+
+<!-- Datatables -->
+<script src="/backstage/plugin/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/backstage/plugin/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/backstage/plugin/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="/backstage/plugin/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/backstage/plugin/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/backstage/plugin/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/backstage/plugin/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script >
+    var DEFAULT_PAFE_SIZE = 5;
+    $(function(){
+        // 初始化表格数据
+        initTable(DEFAULT_PAFE_SIZE);
+
+        // 绑定页面元素的其他事件
+        $("#addModalBtn").bind("click", function() {
+            initAddModal();
+        });
+        $("#addModalSubmit").bind("click", function() {
+            addModal();
+        });
+        $("#editModalSubmit").bind("click", function() {
+            editModal();
+        });
+    });
+
+    // 初始化表格数据
+    function initTable(pageSize) {
+        $('#datatable').DataTable({
+            'paging': true, //分页
+            "serverSide": true, //开启后端分页
+            "pagingType": "full_numbers", //分页样式的类型simple/simple_numbers/full/full_numbers
+            "pageLength": pageSize, //定义初始的页长
+            "processing": true,
+            "destroy": true, //允许销毁替换，在表格重新查询时，可以自动销毁以前的data
+            'lengthChange': true, //控制是否能够调整每页的条数
+            'searching': true,
+            'data-show-refresh': true,
+            'ordering': true,
+            'autoWidth': false,
+            "ajax": function (data, callback, settings) {
+                // 从data获取查询数据
+                var columIndex = data.order[0].column;
+                var direction = data.order[0].dir;
+                var order = data.columns[columIndex].name;
+                pageSize = data.length == undefined  ? pageSize : data.length;
+
+                var searchBean = {};
+                searchBean.currentPage = (data.start / pageSize) + 1;
+                searchBean.pageSize = pageSize;
+                searchBean.order = order;
+                searchBean.direction = direction;
+                searchBean.keyWord = data.search.value;
+
+
+                $.ajax({
+                    url : "/api/jobs",
+                    type : "post",
+                    contentType: "application/json",
+                    data : JSON.stringify(searchBean),
+                    success : function (rs) {
+                        var tableData = {
+                            draw :0,
+                            recordsTotal: 0,
+                            recordsFiltered: 0,
+                            data: []
+                        };
+                        if (!rs) {
+                            layer.alert("请求出错，请稍后重试" + rs.errmsg, {icon: 2});
+                            callback(tableData);
+                            return;
+                        };
+                        if (rs.list == null) {
+                            $('#datatable tbody tr').remove();
+                            $('#loading').remove();
+                            callback(tableData);
+                            return;
+                        }
+                        $('#loading').remove();
+                        var rowsData = [];
+                        for (var i = 0; i < rs.list.length; i++) {
+                            //包装行数据
+                            var rowData = new RowData(rs.list[i].jobId, rs.list[i].jobName, rs.list[i].viewCount, rs.list[i].description);
+                            // 将行数据放到数组里
+                            rowsData.push(rowData);
+                        }
+                        tableData.data = rowsData;
+                        tableData.recordsTotal = rs.total;
+                        tableData.recordsFiltered = rs.total;
+                        callback(tableData);
+                    },
+                    error : function (data) {
+                        layer.alert(data.responseText, {icon: 0});
+                    }
+                });
+            },
+            "columns": [ //定义行数据字段
+                {data: 'jobId', name: "job_id", sortable: true},
+                {data: 'jobName', name: "job_name", sortable: true},
+                {data: 'viewCount', name: "view_count", sortable: true},
+                {data: 'description', name: "description", sortable: true},
+                {data: 'operate', width: '80px', sortable: false}
+            ]
+        });
+    }
+
+    //行数据结构
+    function RowData(jobId, jobName,viewCount,description) {
+        this.jobId = jobId;
+        this.jobName = jobName;
+        this.viewCount = viewCount;
+        this.description = description;
+        this.operate = function () {
+            return "<a href='javascript:void(0);' class='btn_editcolor' " +
+                "data-toggle='modal' data-target='#editModal' " +
+                "onclick='initEditModal(\"" + jobId + "\")'>编辑</a>&nbsp;" +
+                "<a href='javascript:void(0);' onclick='deleteModal(\"" + jobId + "\")' " +
+                "class='btn_editcolor'>删除</a>";
+        }
+    }
+    // 初始化添加页面
+    function initAddModal() {
+        $("#nameForAdd").val("");
+        $("#viewCountForAdd").val("");
+        $("#jobCategoryName").val("");
+    }
+    function addModal() {
+        var job = {};
+        job.jobName = $("#nameForAdd").val();
+        job.viewCount = $("#viewCountForAdd").val();
+        job.jobCategoryId = $("#jobCategoryName").val();
+
+        var jobCategory = {};
+        jobCategory.jobCategoryId = $("#jobCategoryName").val();
+        job.jobCategoryId = jobCategory.jobCategoryId;
+        $.ajax({
+            url : "/api/job",
+            type : "post",
+            contentType: "application/json",
+            data : JSON.stringify(job),
+            success : function (rs) {
+                if (rs.status == 200) {
+                    $('#addModal').modal('hide');
+                    initTable(DEFAULT_PAFE_SIZE);
+                } else {
+                    layer.alert(rs.message, {icon: 0});
+                }
+            },
+            error : function (data) {
+                layer.alert(data.responseText, {icon: 0});
+            }
+        });
+    }
+
+    function initEditModal(jobId) {
+        $.ajax({
+            url : "/api/job/" + jobId,
+            type : "get",
+            success : function (rs) {
+                $("#idForEdit").val(rs.jobId);
+                $("#nameForEdit").val(rs.jobName);
+                $("#viewCountForEdit").val(rs.viewCount);
+                $("#jobCategoryName").val(rs.jobCategory);
+            },
+            error : function (data) {
+                layer.alert(data.responseText, {icon: 0});
+            }
+        });
+    }
+
+    function editModal() {
+        var job = {};
+        job.jobId = $("#idForEdit").val();
+        job.jobName = $("#nameForEdit").val();
+        job.viewCount = $("#viewCountForEdit").val();
+        job.jobCategoryName = $("#jobCategoryNameForEdit").val();
+        $.ajax({
+            url : "/api/job",
+            type : "put",
+            contentType: "application/json",
+            data : JSON.stringify(job),
+            success : function (rs) {
+                if (rs.status == 200) {
+                    $('#editModal').modal('hide');
+                    initTable(DEFAULT_PAFE_SIZE);
+                } else {
+                    layer.alert(rs.message, {icon: 0});
+                }
+            },
+            error : function (data) {
+                layer.alert(data.responseText, {icon: 0});
+            }
+        });
+    }
+
+    function deleteModal(jobId) {
+        bootbox.confirm("Are you sure?", function(result) {
+            if(result) {
+                $.ajax({
+                    url : "/api/job/" + jobId,
+                    type : "delete",
+                    //contentType: "application/json",
+                    //data : JSON.stringify(category),
+                    success : function (rs) {
+                        if (rs.status == 200) {
+                            initTable(DEFAULT_PAFE_SIZE);
+                        } else {
+                            layer.alert(rs.message, {icon: 0});
+                        }
+                    },
+                    error : function (data) {
+                        layer.alert(data.responseText, {icon: 0});
+                    }
+                });
+            }
+        });
+    }
+</script>

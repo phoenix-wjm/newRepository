@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="description" content="Gurdeep singh osahan">
+   <meta name="author" content="Gurdeep singh osahan">
+   <title>牛人直聘</title>
+   <!-- Favicon Icon -->
+   <link rel="icon" type="image/png" href="/frontdesk/images/fav.svg">
+   <!-- Bootstrap core CSS -->
+   <link href="/frontdesk/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Font Awesome-->
+   <link href="/frontdesk/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+   <!-- Material Design Icons -->
+   <link href="/frontdesk/vendor/icons/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
+   <!-- Slick -->
+   <link href="/frontdesk/vendor/slick-master/slick/slick.css" rel="stylesheet" type="text/css">
+   <!-- Lightgallery -->
+   <link href="/frontdesk/vendor/lightgallery-master/dist/css/lightgallery.min.css" rel="stylesheet">
+   <!-- Select2 CSS -->
+<!--   <link href="/frontdesk/vendor/select2/css/select2-bootstrap.css" />-->
+   <link href="/frontdesk/vendor/select2/css/select2.min.css" rel="stylesheet">
+   <!-- Custom styles for this template -->
+   <link href="/frontdesk/css/style.css" rel="stylesheet">
+
+    <link href="https://static.zhipin.com/zhipin-geek/v351/web/geek/css/main.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<!-- Login -->
+<div class="bg-white">
+   <div class="container">
+      <div class="row justify-content-center align-items-center d-flex vh-100">
+         <div class="col-lg-4 mx-auto">
+            <div class="osahan-login py-4">
+               <div class="text-center mb-4">
+<!--                  <a href="../backstage/index.html"><img src="/frontdesk/images/fav.svg" alt=""></a>-->
+                  <h5 class="font-weight-bold mt-3">求职者信息</h5>
+                  <p class="text-muted">马上就能成为一个合格的求职者了！</p>
+               </div>
+
+
+               <form action="javascript:void(0)" data-parsley-validate class="form-horizontal form-label-left">
+
+
+                   <div class="form-group">
+                     <label class="mb-1">姓名</label>
+                     <div class="position-relative icon-form-control">
+
+                        <input type="text"  id="jobHunterName" name="jobHunterName" class="form-control">
+                     </div>
+                  </div>
+
+
+                  <div class="form-group">
+                     <label class="mb-1">性别</label>
+                     <div class="position-relative icon-form-control">
+
+                        <ul>
+                           <!--onclick="getRid()"-->
+                           <li>
+                              <label for="genderM" class="radio-inline">
+                                 <input type="radio" name="userGender" id="genderM" value="男">男
+                              </label>
+                              <label for="genderF" class="radio-inline">
+                                 <input type="radio" name="userGender" id="genderF" value="女">女
+                              </label>
+
+                           </li>
+                        </ul>
+
+                     </div>
+                  </div>
+
+                   <div class="sign-content">
+                       <div class="inner-box">
+                           <h5>请上传您的头像</h5>
+                           <div class="sub-title"><!--<br/>--><!--<span class="red">文件大小不超过&nbsp;8&nbsp;M</span>--></div>
+
+                           上传图片<input type="file" id="file" name="file"><br/><br/>
+                           <div class="layui-upload-list" style="margin-left: 100px">
+                               <img class="layui-upload-img" id="demo1" width="200" height="100" >
+                               <input type="hidden" id="photo" value=""/>
+                               <!--<p id="demoText"></p>-->
+                           </div>
+                           <input type="button" id="button"  style="text-align: right" value="上传" onclick="ajaxFileUpload();">
+                       </div>
+                   </div>
+
+
+                  <div class="form-group">
+                     <label class="mb-1">生日</label>
+                     <div class="position-relative icon-form-control">
+
+                        <input name="birth" id="birth" type="date" class="form-control">
+                     </div>
+                  </div>
+
+
+
+
+                  <div class="form-group">
+                     <label class="mb-1">学历</label>
+                     <div class="position-relative icon-form-control">
+
+                         <select class="educate" name="educate" id="educate">
+                             <option value="初中及以下">初中及以下</option>
+                             <option value="中专/中技">中专/中技</option>
+                             <option value="高中">高中</option>
+                             <option value="大专">大专</option>
+                             <option value="本科">本科</option>
+                             <option value="硕士">硕士</option>
+                             <option value="博士">博士</option>
+                         </select>
+<!--                        <input name="educate" id="educate" type="text" class="form-control">-->
+                     </div>
+                  </div>
+
+                  <div class="form-group">
+                     <label class="mb-1">邮箱</label>
+                     <div class="position-relative icon-form-control">
+
+                        <input name="email" id="email" type="email" class="form-control">
+                     </div>
+                  </div>
+
+                  <div class="form-group">
+                     <label class="mb-1">地址</label>
+                     <div class="position-relative icon-form-control">
+
+                        <input name="address" id="address" type="text" class="form-control">
+                     </div>
+                  </div>
+
+
+                  <button class="btn btn-success btn-block text-uppercase" type="button" id="registerTwo"> 注册 </button>
+
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- End Login -->
+<script src="/frontdesk/vendor/jquery/jquery.min.js"></script>
+<script src="/frontdesk/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Slick -->
+<script src="/frontdesk/vendor/slick-master/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+<!-- lightgallery -->
+<script src="/frontdesk/vendor/lightgallery-master/dist/js/lightgallery-all.min.js"></script>
+<!-- select2 Js -->
+<script src="/frontdesk/vendor/select2/js/select2.min.js"></script>
+<!-- Custom -->
+<script src="/frontdesk/js/custom.js"></script>
+
+<script>
+
+    <!--上传文件-->
+    function ajaxFileUpload()
+    {
+        var file=$("#file")[0].files[0];
+        var formData=new FormData();//FormData 接口提供了一种表示表单数据的键值对的构造方式
+        formData.append("file",file);
+        $.ajax({
+                url:'/frontdesk/uploadPicture',//用于文件上传的服务器端请求地址
+                type:'post',
+                data:formData,
+                secureuri:false,//一般设置为false
+                fileElementId:'file',//文件上传空间的id属性  <input type="file" id="file" name="file" />
+                dataType: 'json',//返回值类型 一般设置为json，返回文本用text
+                processData:false,//很重要，告诉jq不要对data数据进行处理
+                contentType:false,//很重要，指定为false才能形成正确的content-type
+                success: function (data)  //服务器成功响应处理函数  message
+                {
+                    console.log(data);
+                    if (data.status==200){
+                        alert(data.object+"上传成功")
+                        $("#demo1").attr("src", data.object);
+                        $("#photo").val(data.object);
+                    }else{
+                        alert("上传失败")
+                    }
+                },
+                error: function (data, status, e)//服务器响应失败处理函数
+                {
+                    alert(e);
+                }
+            }
+        )
+    }
+</script>
+
+
+<script>
+
+   $(function(){
+      $("#registerTwo").bind("click",function () {
+         checkform();
+      });
+   })
+
+   /*判断姓名、性别是否为空*/
+   function checkform() {
+       var pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      if (document.getElementById('jobHunterName').value.length==0){
+         alert('姓名不能为空');
+         document.getElementById('jobHunterName').focus();
+         return false;
+      }
+       if (!pattern.test($("#email").val())) {
+           alert('邮箱格式不正确');
+           return false;
+       }else {
+           registerSubmitTwo()
+       }
+
+   }
+
+
+
+   //提交求职者信息
+   function registerSubmitTwo() {
+      var jobHunter ={};
+       jobHunter.jobHunterName = $("#jobHunterName").val();
+       jobHunter.sex = $("[name=userGender]:checked").val();
+       jobHunter.birth = $("#birth").val();
+       jobHunter.photo = $("#photo").val();
+       jobHunter.educate = $("#educate").val();
+       jobHunter.email = $("#email").val();
+       jobHunter.address = $("#address").val();
+
+      $.ajax({
+         url:"/frontdesk/SubmissionTwo",
+         type:"post",
+         contentType:"application/json",
+         data:JSON.stringify(jobHunter),
+         dataType:"json",
+         success:function (data) {
+            console.log("==========>>>"+data)
+
+            alert(data.info);
+            if (data.info=="注册邮箱已被使用，请重新输入"){
+
+               location.href="/frontdesk/SubmissionPageTwo";
+
+            }else {
+
+               if (data.info=="注册成功"){
+
+                  location.href="/frontdesk/GoIndex";
+
+               }
+            }
+
+         }
+      })
+   }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;padding-left: 0px">
+            <a href="/common/dashboard" class="site_title">
+                <img src="/backstage/images/flag/backstage_logo.png"
+                     style="width: 41%;border-radius: 50%" title="牛人直聘后台系统">
+                <span style="padding-left: 1px">牛人后台</span>
+            </a>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <!-- menu profile quick info -->
+        <div class="profile clearfix">
+            <div class="profile_pic">
+                <img src="/backstage/manager/images/img.jpg" alt="..." class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span>欢迎登录!</span><br>
+                <span></span>
+            </div>
+        </div>
+        <!-- /menu profile quick info -->
+
+        <br />
+
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <ul class="nav side-menu">
+                    <li shiro:hasRole="admin"><a href="/common/dashboard"><i class="fa fa-home"></i> 主页 </a></li>
+                    <li shiro:hasRole="admin"><a><i class="fa fa-user"></i> 用户管理 <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="/users/userPage">用户列表</a></li>
+                        </ul>
+                    </li>
+                    <li shiro:hasRole="admin"><a><i class="fa fa-group"></i> 角色管理 <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="/roles/rolePage">角色列表</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-bank"></i> 企业管理 <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li shiro:hasRole="admin"><a href="/companines/companyPage">企业列表</a></li>
+                            <li shiro:hasRole="company"><a href="/companines/companyPage">企业信息</a></li>
+                        </ul>
+                    </li>
+
+                    <li ><a><i class="fa fa-sitemap"></i> 职位管理 <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li shiro:hasRole="admin"><a href="/jobs/jobsPage">职位列表</a></li>
+                            <li shiro:hasRole="admin"><a href="/jobcategories/jobcategoriesPage">职位分类</a></li>
+                            <li shiro:hasRole="company"><a href="/jobs/jobsPages">职位发布列表</a></li>
+                        </ul>
+                    </li>
+
+                    <li shiro:hasAnyRoles="admin,company"><a href="/messages/messagePage"><i class="fa fa-comment"></i> 留言管理 </a></li>
+
+                    <li shiro:hasAnyRoles="admin,company"><a href="/newses/newsPage"><i class="fa fa-bell"></i> 新闻公告管理 </a></li>
+
+                    <li shiro:hasAnyRoles="admin,company"><a href="/blogrolls/blogrollPage"><i class="fa fa-link"></i> 友情链接管理 </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>企业信息</h3>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box table-responsive">
+                                    <form onsubmit="return false" data-parsley-validate class="layui-form form-label-left"  id="companyform">
+                                        <input type="hidden" id="idForEdit" name="companyId" value="">
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" >企业名称</label>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <input type="text" id="nameForEdit" name="companyName" class="form-control ">
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" >公司地址</label>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <input type="text" id="addressForEdit" name="address" class="form-control ">
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" >公司描述</label>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <input type="text" id="descriptionForEdit" name="description" class="form-control ">
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" >信用代码</label>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <input type="text" id="creditCodeForEdit" name="creditCode" class="form-control ">
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" >公司性质</label>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <input type="text" id="natureForEdit" name="nature" class="form-control ">
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <input type="reset" class="layui-btn btn-primary" value="重置">
+                                            <input type="submit" class="layui-btn btn-success" value="修改">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Datatables -->
+<script src="/backstage/plugin/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/backstage/plugin/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/backstage/plugin/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/backstage/plugin/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="/backstage/plugin/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/backstage/plugin/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/backstage/plugin/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/backstage/plugin/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script>
+    $(function() {
+        $.ajax({
+            url : "/api/company/companyinfo" ,
+            type : "get",
+            success : function (rs) {
+                $("#idForEdit").val(rs.companyId);
+                $("#nameForEdit").val(rs.companyName);
+                $("#addressForEdit").val(rs.address);
+                $("#descriptionForEdit").val(rs.description);
+                $("#creditCodeForEdit").val(rs.creditCode);
+                $("#natureForEdit").val(rs.nature);
+            },
+            error : function (data) {
+                layer.alert(data.responseText, {icon: 0});
+            }
+        });
+    })
+
+    $("#companyform").submit(function() {
+        var company = {};
+        company.companyId = $("#idForEdit").val();
+        company.companyName = $("#nameForEdit").val();
+        company.address = $("#addressForEdit").val();
+        company.description = $("#descriptionForEdit").val();
+        company.creditCode = $("#creditCodeForEdit").val();
+        company.nature = $("#natureForEdit").val();
+
+        $.ajax({
+            url : "/api/company/companyinfo",
+            type : "put",
+            contentType: "application/json",
+            data : JSON.stringify(company),
+            success : function (rs) {
+                if (rs.status == 200) {
+                    layer.alert("修改成功！")
+                } else {
+                    layer.alert(rs.message, {icon: 0});
+                }
+            },
+            error : function (data) {
+                layer.alert(data.responseText, {icon: 0});
+            }
+        });
+    })
+</script>
+</body>
+</html>

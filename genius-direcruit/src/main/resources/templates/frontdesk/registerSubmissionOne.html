@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="description" content="Gurdeep singh osahan">
+   <meta name="author" content="Gurdeep singh osahan">
+   <title>牛人直聘</title>
+   <!-- Favicon Icon -->
+   <link rel="icon" type="image/png" href="/frontdesk/images/fav.svg">
+   <!-- Bootstrap core CSS -->
+   <link href="/frontdesk/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Font Awesome-->
+   <link href="/frontdesk/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+   <!-- Material Design Icons -->
+   <link href="/frontdesk/vendor/icons/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
+   <!-- Slick -->
+   <link href="/frontdesk/vendor/slick-master/slick/slick.css" rel="stylesheet" type="text/css">
+   <!-- Lightgallery -->
+   <link href="/frontdesk/vendor/lightgallery-master/dist/css/lightgallery.min.css" rel="stylesheet">
+   <!-- Select2 CSS -->
+<!--   <link href="/frontdesk/vendor/select2/css/select2-bootstrap.css" />-->
+   <link href="/frontdesk/vendor/select2/css/select2.min.css" rel="stylesheet">
+   <!-- Custom styles for this template -->
+   <link href="/frontdesk/css/style.css" rel="stylesheet">
+</head>
+<body>
+<input type="hidden" id="flag" th:value="${flag}" />
+<!-- Login -->
+<div class="bg-white">
+   <div class="container">
+      <div class="row justify-content-center align-items-center d-flex vh-100">
+         <div class="col-lg-4 mx-auto">
+            <div class="osahan-login py-4">
+               <div class="text-center mb-4">
+<!--                  <a href="../backstage/index.html"><img src="/frontdesk/images/fav.svg" alt=""></a>-->
+                  <h5 class="font-weight-bold mt-3">账号基本信息</h5>
+                  <p class="text-muted">请填写一下账号基本信息吧！</p>
+               </div>
+
+
+               <form action="javascript:void(0)" data-parsley-validate class="form-horizontal form-label-left">
+
+                  <div class="form-group">
+                     <label class="mb-1">用户名</label>
+                     <div class="position-relative icon-form-control">
+                        <i class="mdi mdi-account position-absolute"></i>
+
+                        <input type="text" class="form-control" id="userName" name="userName">
+                     </div>
+                  </div>
+
+
+                  <div class="form-group">
+                     <label class="mb-1">密码</label>
+                     <div class="position-relative icon-form-control">
+                        <i class="mdi mdi-key-variant position-absolute"></i>
+
+                        <input type="password" class="form-control" id="userPwd" name="userPwd">
+                     </div>
+                  </div>
+
+
+                  <div class="form-group">
+                     <label class="mb-1">手机号</label>
+                     <div class="position-relative icon-form-control">
+                        <i class="mdi mdi-phone position-absolute"></i>
+                        <input name="tel" id="tel" type="tel" class="form-control">
+                     </div>
+                  </div>
+
+
+             <!--     分配角色:求职者-->
+                  <div class="form-group">
+                  <!--                           <input type="hidden" name="syllabusId" value="${syllabus_db.syllabusId}">-->
+                     <div class="position-relative icon-form-control">
+                        <input name="role" id="role" type="hidden" value="2" class="form-control" placeholder="分配求职者角色">
+                     </div>
+                  </div>
+
+                  <!-- 分配角色:招聘者-->
+                  <div class="form-group">
+                     <!--                           <input type="hidden" name="syllabusId" value="${syllabus_db.syllabusId}">-->
+                     <div class="position-relative icon-form-control">
+                        <input name="roleTwo" id="roleTwo" type="hidden" value="3" class="form-control" placeholder="分配招聘者角色">
+                     </div>
+                  </div>
+
+
+
+                  <button class="btn btn-success btn-block text-uppercase" type="button" id="registerOne"> 下一步 </button>
+
+
+
+
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<!-- End Login -->
+<!-- Bootstrap core JavaScript -->
+<script src="/frontdesk/vendor/jquery/jquery.min.js"></script>
+<script src="/frontdesk/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Contact form JavaScript -->
+<!-- Do not edit these files! In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
+<!--<script src="/frontdesk/js/jqBootstrapValidation.js"></script>-->
+<!--<script src="/frontdesk/js/contact_me.js"></script>-->
+<!-- Slick -->
+<script src="/frontdesk/vendor/slick-master/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+<!-- lightgallery -->
+<script src="/frontdesk/vendor/lightgallery-master/dist/js/lightgallery-all.min.js"></script>
+<!-- select2 Js -->
+<script src="/frontdesk/vendor/select2/js/select2.min.js"></script>
+<!-- Custom -->
+<script src="/frontdesk/js/custom.js"></script>
+<script>
+
+
+   $(function(){
+      $("#registerOne").bind("click",function () {
+         checkform();
+      });
+
+
+   })
+
+
+   /*判断输入框是否为空*/
+   function checkform() {
+      var pattern =/^[1][3,4,5,7,8][0-9]{9}$/;
+      if (document.getElementById('userName').value.length==0){
+         alert('用户名不能为空');
+         document.getElementById('userName').focus();
+         return false;
+      }
+      if (document.getElementById('userPwd').value.length==0){
+         alert('密码不能为空');
+         document.getElementById('userPwd').focus();
+         return false;
+      }if (!pattern.test($("#tel").val())){
+         alert('手机号码不正确');
+         return false;
+      }
+      else {
+
+         registerSubmitOne();
+         // var flag = $("#flag");
+         // if (flag == 1) {
+         //    registerSubmitOne();
+         // } else {
+         //    registerCompanySubmitOne();
+         // }
+      }
+
+   }
+
+
+
+   function registerSubmitOne() {
+      var flag = $("#flag").val();
+      //      var user ={};定义一个对象
+      var user ={};
+      user.userName = $("#userName").val();
+      user.userPwd = $("#userPwd").val();
+      user.tel = $("#tel").val();
+      user.createTime = $("#createTime").val();
+
+      //roles = []定义的一个集合，#role页面取的角色
+      // var roles = [];
+      // var role = {};
+      // role.roleId = $("#role").val();
+      // roles.push(role);
+
+      if (flag==1){
+         /*求职者*/
+         //roles = []定义的一个集合，#role页面取的角色
+         var roles = [];
+         var role = {};
+         role.roleId = $("#role").val();
+         roles.push(role);
+      }else {
+         /*   招聘者
+         flag=2
+            */
+         var roles = [];
+         var role = {};
+         role.roleId = $("#roleTwo").val();
+         roles.push(role);
+      }
+      user.roles = roles;
+
+      $.ajax({
+         url:"/frontdesk/SubmissionOne?flag="+flag,
+         type:"post",
+         contentType:"application/json",
+         data:JSON.stringify(user),
+         dataType:"json",
+         success:function (data) {
+            console.log("==========>>>"+data)
+
+            alert(data.info);
+            if (data.info=="该用户名已被注册，请重新输入"){
+
+               location.href="/frontdesk/SubmissionPage?flag="+flag;
+
+            }else {
+
+               if (data.info=="将填求职者信息表"){
+
+                  location.href="/frontdesk/SubmissionPageTwo";
+               }else {
+                  location.href="/frontdesk/GoCompanyPage";
+               }
+            }
+
+         }
+      })
+
+   }
+
+
+
+
+
+</script>
+
+</body>
+</html>

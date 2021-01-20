@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="description" content="Gurdeep singh osahan">
+   <meta name="author" content="Gurdeep singh osahan">
+   <title>牛人直聘</title>
+   <!-- Favicon Icon -->
+   <link rel="icon" type="image/png" href="/frontdesk/images/fav.svg">
+   <!-- Bootstrap core CSS -->
+   <link href="/frontdesk/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Font Awesome-->
+   <link href="/frontdesk/vendor/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+   <!-- Material Design Icons -->
+   <link href="/frontdesk/vendor/icons/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
+   <!-- Slick -->
+   <link href="/frontdesk/vendor/slick-master/slick/slick.css" rel="stylesheet" type="text/css">
+   <!-- Lightgallery -->
+   <link href="/frontdesk/vendor/lightgallery-master/dist/css/lightgallery.min.css" rel="stylesheet">
+   <!-- Select2 CSS -->
+<!--   <link href="/frontdesk/vendor/select2/css/select2-bootstrap.css" />-->
+   <link href="/frontdesk/vendor/select2/css/select2.min.css" rel="stylesheet">
+   <!-- Custom styles for this template -->
+   <link href="/frontdesk/css/style.css" rel="stylesheet">
+</head>
+<body>
+<!-- Login -->
+<div class="bg-white">
+   <div class="container">
+      <div class="row justify-content-center align-items-center d-flex vh-100">
+         <div class="col-lg-4 mx-auto">
+            <div class="osahan-login py-4">
+               <div class="text-center mb-4">
+<!--                  <a href="../backstage/index.html"><img src="/frontdesk/images/fav.svg" alt=""></a>-->
+                  <h5 class="font-weight-bold mt-3">企业信息</h5>
+                  <p class="text-muted">请填写企业信息！</p>
+               </div>
+
+
+               <form action="javascript:void(0)" data-parsley-validate class="form-horizontal form-label-left">
+
+                  <div class="form-group">
+                     <label class="mb-1">企业名称</label>
+                     <div class="position-relative icon-form-control">
+
+                        <input type="text"  id="companyName" name="companyName" class="form-control">
+                     </div>
+                  </div>
+
+
+                  <div class="form-group">
+                     <label class="mb-1">公司地址</label>
+                     <div class="position-relative icon-form-control">
+                         <input name="address" id="address" type="text" class="form-control">
+
+                     </div>
+                  </div>
+
+
+                  <div class="form-group">
+                     <label class="mb-1">公司描述</label>
+                     <div class="position-relative icon-form-control">
+
+                         <input name="description" id="description" type="text" class="form-control">
+                     </div>
+                  </div>
+
+                  <div class="form-group">
+                     <label class="mb-1">信用代码</label>
+                     <div class="position-relative icon-form-control">
+
+                        <input name="creditCode" id="creditCode" type="" class="form-control">
+                     </div>
+                  </div>
+
+
+                  <div class="form-group">
+                     <label class="mb-1">公司性质</label>
+                     <div class="position-relative icon-form-control">
+
+                         <select class="nature" name="nature" id="nature">
+                             <option value="有限责任公司">有限责任公司</option>
+                             <option value="股份有限公司">股份有限公司</option>
+                             <option value="国有独资公司">国有独资公司</option>
+                             <option value="个人独资企业">个人独资企业</option>
+                             <option value="合伙企业">合伙企业</option>
+                             <option value="外资投资企业">外资投资企业</option>
+                             <option value="私营企业">私营企业</option>
+                         </select>
+<!--                        <input name="educate" id="educate" type="text" class="form-control">-->
+                     </div>
+                  </div>
+
+
+
+
+
+                  <button class="btn btn-success btn-block text-uppercase" type="button" id="registerCompany"> 注册 </button>
+
+
+
+
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<!-- End Login -->
+<!-- Bootstrap core JavaScript -->
+<script src="/frontdesk/vendor/jquery/jquery.min.js"></script>
+<script src="/frontdesk/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Contact form JavaScript -->
+<!-- Do not edit these files! In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
+<!--<script src="/frontdesk/js/jqBootstrapValidation.js"></script>-->
+<!--<script src="/frontdesk/js/contact_me.js"></script>-->
+<!-- Slick -->
+<script src="/frontdesk/vendor/slick-master/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+<!-- lightgallery -->
+<script src="/frontdesk/vendor/lightgallery-master/dist/js/lightgallery-all.min.js"></script>
+<!-- select2 Js -->
+<script src="/frontdesk/vendor/select2/js/select2.min.js"></script>
+<!-- Custom -->
+<script src="/frontdesk/js/custom.js"></script>
+<script>
+
+
+   $(function(){
+      $("#registerCompany").bind("click",function () {
+         checkform();
+      });
+
+
+   })
+
+
+   /*判断姓名、性别是否为空*/
+   function checkform() {
+      if (document.getElementById('companyName').value.length==0){
+         alert('企业名称不能为空');
+         document.getElementById('companyName').focus();
+         return false;
+      }
+       if (document.getElementById('address').value.length==0){
+         alert('公司描述不能为空');
+         document.getElementById('address').focus();
+         return false;
+      }
+      else{
+           registerSubmitCompany()
+      }
+   }
+
+
+
+
+// $(".educate").val($("#educate").val());
+
+   function registerSubmitCompany() {
+      var Company ={};
+       Company.companyName = $("#companyName").val();
+       Company.address = $("#address").val();
+       Company.description = $("#description").val();
+       Company.creditCode = $("#creditCode").val();
+       Company.nature = $("#nature").val();
+
+
+      $.ajax({
+         url:"/frontdesk/SubmissionCompany",
+         type:"post",
+         contentType:"application/json",
+         data:JSON.stringify(Company),
+         dataType:"json",
+         success:function (data) {
+            console.log("==========>>>"+data)
+
+            alert(data.info);
+            if (data.info=="该公司名称已被注册，请核实后添加"){
+
+               location.href="/frontdesk/GoCompanyPage";
+
+            }else {
+
+               if (data.info=="企业注册成功"){
+
+                  location.href="/frontdesk/GoIndex";
+
+               }
+            }
+
+         }
+      })
+
+   }
+
+
+
+</script>
+
+</body>
+</html>

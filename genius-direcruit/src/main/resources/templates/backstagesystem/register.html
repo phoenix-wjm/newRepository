@@ -1,0 +1,157 @@
+<div class="login_wrapper">
+    <div id="register" class="animate form">
+
+        <section class="login_content">
+
+
+            <form>
+                <img src="/frontdesk/images/fav.svg" alt="..." class="img-circle mb-lg-3">
+                <h1>牛人招聘系统后台注册</h1>
+                <div>
+                    <input name="userName" id="userName" type="text" class="form-control" placeholder="请输入账户名">
+                </div>
+                <div>
+                    <!--<input type="email" class="form-control" placeholder="Email" required="" />-->
+                    <input name="tel" id="tel" type="tel" class="form-control" placeholder="请输入手机号">
+                </div>
+
+                <div class="form-group" style="float: left">
+                    <input type="text" id="code" name="code" style="width: 120px;display: inline-block" class="form-control"
+                           placeholder="验证码">
+
+                    <div id="send" class="text-right" style="float: right; padding-left: 30px">
+                        <button type="button" class="btn btn-primary mb-2" onclick="sendSms()">发送验证码</button>
+                    </div>
+                </div>
+
+                <div>
+                    <input name="userPwd" id="userPwd" type="password" class="form-control" placeholder="请输入密码">
+                    <input type="password" name="userPwd1" class="form-control" onkeyup="validate()" placeholder="确认密码"
+                           required=""/>
+                </div>
+                <div>
+                    <button id="registerBtn" class="btn btn-block" type="button">注册</button>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="separator">
+                    <p class="change_link">已有账户 ?
+                        <a href="/user/login" class="to_register"> 登录 </a>
+                    </p>
+
+                    <div class="clearfix"></div>
+                    <br />
+
+                    <div>
+                        <h1><i class="fa fa-paw"></i> 找工作，上牛人!</h1>
+                        <p>©2021 All Rights Reserved.</p>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    function validate() {
+        var pw1 = $("[name=userPwd]").val();
+        var pw2 = $("[name=userPwd1]").val();
+
+        return pw1 == pw2;
+    }
+
+    $(function () {
+        $("#registerBtn").bind("click", function () {
+            register();
+        });
+    });
+
+    function register() {
+        if (!validate()) {
+            alert("两次输入密码不一致.");
+            return;
+        }
+
+
+
+        var userVo = {};
+        userVo.userName = $("#userName").val();
+        userVo.userPwd = $("#userPwd").val();
+        userVo.tel=$("#tel").val();
+        userVo.code=$("#code").val();
+        $.ajax({
+            url: "/api/user",
+            type: "post",
+            contentType: "application/json",
+            data: JSON.stringify(userVo),
+            success: function (data) {
+                if (data.status == 200) {
+                    location.href = "/user/login";
+                } else {
+                    layer.msg(data.message, {icon: 0});
+                }
+            },
+            error: function (data) {
+                layer.msg(data.responseText, {icon: 0});
+            }
+        });
+    }
+
+   /* //短信进入
+    function smsEnter() {
+        $.ajax({
+            url:"/frontdesk/smsLogin/" + $("#code").val()+"/"+ $("#tel").val(),
+            type:"get",
+            //contentType: "application/json",
+            //data : JSON.stringify(sms),
+            success:function(data){
+
+                console.log("==========>>>"+data)
+
+                alert(data.info);
+                if(data.info=="用户已注册，请登录"){
+                    //访问主页面
+                    location.href="/test/login"
+                }else {
+                    if (data.info=="登入成功"){
+
+                        location.href="/frontdesk/SubmissionPage"
+                    }
+                }
+            }
+        })
+    }*/
+    var s = 30;
+    //发送短信
+    function sendSms() {
+
+
+        var tel = $("#tel").val()
+        $.ajax({
+            url: "/frontdesk/sendSms",
+            type: "get",
+            data: {"phone": tel},
+            dataType: "json", //返回类型
+            success: function (data) {
+                console.log(data)
+                alert(data.info);
+            }
+        })
+
+        var time = setInterval(function () {
+            //禁用发送验证码按钮  class="btn btn-outline-secondary"
+            $("#send").html("<button type='button'  class='btn btn-outline-secondary disabled' >" + s + "秒后发送验证码</button>")
+            s--;
+            if (s == 0) { //倒计时结束
+                //清除计时器
+                clearInterval(time);
+                //启用发送验证码 class="btn btn-success"
+                $("#send").html("<button type='button' class='btn btn-success' onclick=\"sendSms()\">发送验证码</button>")
+            }
+
+        }, 1000)
+    }
+</script>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/frontdesk/vendor/jquery/jquery-3.4.1.js"></script>
+    <link href="https://static.zhipin.com/zhipin-geek/v351/web/geek/css/main.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div>
+    <tr>
+        <td colspan="2" >
+            <div id="show" style="margin: auto 0;float: left;">
+                简历上传：<input type="file" id="file" name="file" >
+                <input  type="button" id="button" value="上传" onclick="ajaxFileUpload()">
+            </div>
+        </td>
+    </tr>
+</div>
+<br>
+<hr>
+<div>
+    <tr>
+        <td>
+         <!--   <a th:href="@{'/test/index/'+${city.cityId}}" th:text="${city.cityName}"></a>-->
+        请点击下载：<a th:href="@{'/frontjobs/download?'+'fileName='+${job.url}}">简历下载</a>
+        </td>
+    </tr>
+</div>
+<script>
+    <!--上传文件-->
+    function ajaxFileUpload()
+    {
+        var file=$("#file")[0].files[0];
+        var formData=new FormData();//FormData 接口提供了一种表示表单数据的键值对的构造方式
+        formData.append("file",file);
+        $.ajax({
+                url:'/frontjobs/upload',//用于文件上传的服务器端请求地址
+                type:'post',
+                data:formData,
+                secureuri:false,//一般设置为false
+                fileElementId:'file',//文件上传空间的id属性  <input type="file" id="file" name="file" />
+                dataType: 'text',//返回值类型 一般设置为json
+                processData:false,//很重要，告诉jq不要对data数据进行处理
+                contentType:false,//很重要，指定为false才能形成正确的content-type
+                success: function (msg)  //服务器成功响应处理函数  message
+                {
+                    console.log(msg+"成功");
+                    $("#file").remove();
+                    $("#button").remove();
+                    var txt="<input type='text' id='fileName' name='file' value='"+msg+"'/><input id='fileButton' type='button' onclick='ReplacePhoto()' value='更换文件'/>";
+                    $("#show").append(txt);
+                    alert(msg.message)
+                },
+            }
+        )
+    }
+    function ReplacePhoto(){
+        var txt="<input type='file' id ='file' name='file'/>" +
+            "<input type='button' id='button' value='上传' onclick='ajaxFileUpload()'/>";
+        $("#fileName").remove();
+        $("#fileButton").remove();
+        $("#show").append(txt);
+    }
+</script>
+</body>
+</html>
