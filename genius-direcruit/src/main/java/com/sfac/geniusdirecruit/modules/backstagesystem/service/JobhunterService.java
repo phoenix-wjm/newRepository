@@ -1,8 +1,10 @@
 package com.sfac.geniusdirecruit.modules.backstagesystem.service;
 
 import com.github.pagehelper.PageInfo;
+import com.sfac.geniusdirecruit.common.entity.ResultEntity;
 import com.sfac.geniusdirecruit.common.entity.SearchBean;
 import com.sfac.geniusdirecruit.modules.backstagesystem.entity.Jobhunter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,4 +19,6 @@ public interface JobhunterService {
     List<Jobhunter> getJobhunter();
 
     PageInfo<Jobhunter> getJobhunterBySearchBean(SearchBean searchBean);
+    //头像上传
+    ResultEntity uploadUserFile(MultipartFile file);
 }

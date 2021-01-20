@@ -99,4 +99,7 @@ public interface UserDao {
             "</foreach>"+
             "</script>"})
     List<String> selectUserNameByIds(@Param("userIdList") List<Integer> userIdList);
+
+    @Update("update user set user_pwd = #{userPwd} where user_id = #{userId}")
+    void modifyPassword(User user);
 }

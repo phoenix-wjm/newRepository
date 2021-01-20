@@ -68,4 +68,6 @@ public interface UserService {
     //企业Company表信息添加
     HashMap<Object, String> registerCompany(Company company, HttpServletRequest request);
 
+    HashMap<Object, String> ChangePassword(String newPassword, HttpServletRequest request);
+
 }

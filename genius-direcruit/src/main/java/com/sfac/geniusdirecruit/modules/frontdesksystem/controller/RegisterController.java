@@ -135,7 +135,11 @@ public class RegisterController {
 
 
     //头像上传
-
+    @RequestMapping(value="/uploadPicture",method = RequestMethod.POST)
+    @ResponseBody         //@RequestParam("file") 数据库中该属性的名称
+    public ResultEntity<String> execute(@RequestParam(value="file",required = false) MultipartFile file, HttpServletRequest request) {
+        return jobhunterService.uploadUserFile(file);
+    }
 
 
 
